@@ -1,0 +1,611 @@
+## Script may work with original file(1) but really worse
+if(! test -x /bin/nfile) fn nfile{/bin/file $*}
+
+## In case then user forgot set variables to _werc/config
+if(~ $#icodir 0) icodir='fakedir'
+if(~ $#icosign_size 0) icosign_size='3em'
+if(~ $#icopict_size 0) icopict_size='48px'
+if(~ $#picture_preview 0) picture_preview=1
+if(~ $#onclick 0) onclick='onclick'
+
+fn fileinfo {
+exclam_mark=''
+basename=`{basename $1}
+isdir=0
+info=`{ls -lsd $1 | awk '{print "<br>&nbsp;&nbsp;Date: " $8 " " $9 " " $10 "<br>&nbsp;&nbsp;Size: " $1 "kb<br>"}'}
+switch(`{nfile -m $1}) {
+		case *directory
+			isdir=1
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/inode-directory.png" alt="&#x1F4C2;" height='^$icopict_size^' title="Directory"></span><br>'
+
+
+
+## Archives
+		case application/ace
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-ace.png" alt="&#x1F5DC;" height='^$icopict_size^' title="ace archive"></span><br>'
+
+		case application/arj
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-arj.png" alt="&#x1F5DC;" height='^$icopict_size^' title="arj archive"></span><br>'
+
+		case application/epub+zip
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-epub+zip.png" alt="&#x1F5DC;" height='^$icopict_size^' title="epub book"></span><br>'
+
+		case application/ha
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-ha.png" alt="&#x1F5DC;" height='^$icopict_size^' title="ha archive"></span><br>'
+
+		case application/java-archive
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-java-archive.png" alt="&#x1F5DC;" height='^$icopict_size^' title="java jar archive"></span><br>'
+
+		case application/lha
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-lha.png" alt="&#x1F5DC;" height='^$icopict_size^' title="lha archive"></span><br>'
+
+		case application/lzip
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-lzip.png" alt="&#x1F5DC;" height='^$icopict_size^' title="lzip archive"></span><br>'
+
+		case application/vnd.android.package-archive
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-apk.png" alt="&#x1F5DC;" height='^$icopict_size^' title="Android package"></span><br>'
+
+		case application/vnd.ms-cab-compressed
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-vnd.ms-cab-compressed.png" alt="&#x1F5DC;" height='^$icopict_size^' title="cab archive"></span><br>'
+
+		case application/vnd.debian.binary-package
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-vnd.debian.binary-package.png" alt="&#x1F5DC;" height='^$icopict_size^' title="deb package"></span><br>'
+
+		case application/vnd.rar
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-vnd.rar.png" alt="&#x1F5DC;" height='^$icopict_size^' title="rar archive"></span><br>'
+
+		case application/x-compress
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-compress.png" alt="&#x1F5DC;" height='^$icopict_size^' title="compressed data"></span><br>'
+
+		case application/x-gzip
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-gzip.png" alt="&#x1F5DC;" height='^$icopict_size^' title="gzip archive"></span><br>'
+
+		case application/x-jar
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-jar.png" alt="&#x1F5DC;" height='^$icopict_size^' title="java jar archive"></span><br>'
+
+		case application/x-lzx
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-lzx.png" alt="&#x1F5DC;" height='^$icopict_size^' title="lzx archive"></span><br>'
+
+		case application/x-mobipocket-ebook
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-mobipocket-ebook.png" alt="&#x1F5DC;" height='^$icopict_size^' title="mobi book"></span><br>'
+
+		case application/x-cab
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-msi.png" alt="&#x1F5DC;" height='^$icopict_size^' title="cab archive"></span><br>'
+
+		case application/x-rpm
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-rpm.png" alt="&#x1F5DC;" height='^$icopict_size^' title="rpm package"></span><br>'
+
+		case application/x-tar application/x-ustar
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-tar.png" alt="&#x1F5DC;" height='^$icopict_size^' title="tar archive"></span><br>'
+
+		case application/x-xz
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-xz.png" alt="&#x1F5DC;" height='^$icopict_size^' title="xz archive"></span><br>'
+
+		case application/x-zpaq
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/package-x-generic.png" alt="&#x1F5DC;" height='^$icopict_size^' title="archive"></span><br>'
+
+		case application/x-deflate
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-zlib.png" alt="&#x1F5DC;" height='^$icopict_size^' title="zlib archive"></span><br>'
+
+		case application/zip application/x-lim application/x-imp
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-zip.png" alt="&#x1F5DC;" height='^$icopict_size^' title="zip archive"></span><br>'
+
+		case application/zoo
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-zoo.png" alt="&#x1F5DC;" height='^$icopict_size^' title="zoo archive"></span><br>'
+
+		case application/x-7z-compressed
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-7z-compressed.png" alt="&#x1F5DC;" height='^$icopict_size^' title="xz archive"></span><br>'
+
+		case application/x-bzip
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-bzip.png" alt="&#x1F5DC;" height='^$icopict_size^' title="bzip archive"></span><br>'
+
+		case application/x-bzip2
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-bzip2.png" alt="&#x1F5DC;" height='^$icopict_size^' title="bzip2 archive"></span><br>'
+
+		case application/x-cpio
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-cpio.png" alt="&#x1F5DC;" height='^$icopict_size^' title="cpio archive"></span><br>'
+
+
+
+## Audios
+		case audio/aac
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-aac.png" alt="&#x1F3B6;" height='^$icopict_size^' title="aac audio"></span><br>'
+
+		case audio/amr
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-amr.png" alt="&#x1F3B6;" height='^$icopict_size^' title="amr audio"></span><br>'
+
+		case audio/ape
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-ape.png" alt="&#x1F3B6;" height='^$icopict_size^' title="monkey ape audio"></span><br>'
+
+		case audio/basic
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-basic.png" alt="&#x1F3B6;" height='^$icopict_size^' title="Sun audio"></span><br>'
+
+		case audio/flac
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-flac.png" alt="&#x1F3B6;" height='^$icopict_size^' title="flac audio"></span><br>'
+
+		case audio/m4a
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-x-m4a.png" alt="&#x1F3B6;" height='^$icopict_size^' title="m4a audio"></span><br>'
+
+		case audio/midi
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-midi.png" alt="&#x1F3B6;" height='^$icopict_size^' title="midi audio"></span><br>'
+
+		case audio/mus
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-mus.png" alt="&#x1F3B6;" height='^$icopict_size^' title="MusePack audio"></span><br>'
+
+		case audio/ogg
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-ogg.png" alt="&#x1F3B6;" height='^$icopict_size^' title="ogg audio"></span><br>'
+
+		case audio/mpeg
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-mpeg.png" alt="&#x1F3B6;" height='^$icopict_size^' title="mp3 and other audio"></span><br>'
+
+		case audio/x-mpegurl
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-x-mpegurl.png" alt="&#x1F3B6;" height='^$icopict_size^' title="mpegurl m3u playlist"></span><br>'
+
+		case audio/vnd.rn-realaudio
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-vnd.rn-realaudio.png" alt="&#x1F3B6;" height='^$icopict_size^' title="realaudio"></span><br>'
+
+		case audio/wave
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-wave.png" alt="&#x1F3B6;" height='^$icopict_size^' title="wave audio"></span><br>'
+
+		case audio/x-aiff
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-x-aiff.png" alt="&#x1F3B6;" height='^$icopict_size^' title="aiff audio"></span><br>'
+
+		case audio/x-twinvq
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-x-twinvq.png" alt="&#x1F3B6;" height='^$icopict_size^' title="TwinVQ audio"></span><br>'
+
+		case audio/x-voc
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-x-voc.png" alt="&#x1F3B6;" height='^$icopict_size^' title="voc audio"></span><br>'
+
+		case application/x-scpls
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-xscpls.png" alt="&#x1F3B6;" height='^$icopict_size^' title="playlist"></span><br>'
+
+
+
+## Tracker audios
+		case audio/tracker-669
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-669.png" alt="&#x1F3B9;" height='^$icopict_size^' title="669 Tracker audio"></span><br>'
+
+		case audio/tracker-abk
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-abk.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Amos Tracker audio"></span><br>'
+
+		case audio/tracker-ahx
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-ahx.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Abyss Tracker audio"></span><br>'
+
+		case audio/tracker-amf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-amf.png" alt="&#x1F3B9;" height='^$icopict_size^' title="AMF Tracker audio"></span><br>'
+
+		case audio/tracker-amt
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-amt.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Ace Tracker audio"></span><br>'
+
+		case audio/tracker-ast
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-ast.png" alt="&#x1F3B9;" height='^$icopict_size^' title="AllSound Tracker audio"></span><br>'
+
+		case audio/tracker-dtm
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-dtm.png" alt="&#x1F3B9;" height='^$icopict_size^' title="DigiTracker audio"></span><br>'
+
+		case audio/tracker-it
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-it.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Impulse Tracker audio"></span><br>'
+
+		case audio/tracker-mod
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-mod.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Amiga module audio"></span><br>'
+
+		case audio/tracker-mgb
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-mgb.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Gameboy Tracker audio"></span><br>'
+
+		case audio/tracker-mt2
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-mt2.png" alt="&#x1F3B9;" height='^$icopict_size^' title="MadTracker audio"></span><br>'
+
+		case audio/tracker-mtm
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-mtm.png" alt="&#x1F3B9;" height='^$icopict_size^' title="MultiTracker audio"></span><br>'
+
+		case audio/tracker-s3m
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-s3m.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Scream Tracker3 audio"></span><br>'
+
+		case audio/tracker-xm
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-xm.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Fast Tracker2 audio"></span><br>'
+
+		case audio/tracker-xmod
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-tracker-xmod.png" alt="&#x1F3B9;" height='^$icopict_size^' title="Modplug Tracker audio"></span><br>'
+
+
+
+## Previewable graphics
+		case image/avif
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-avif.png" alt="&#x1F5BB;" height='^$icopict_size^' title="avif image"></span><br>'
+			if(~ $picture_preview 1) thumb='<span style="font-size: '^$icosign_size^'"><img src="/'^$filesdir/$filesdir_subdir/$basename^'" alt="&#x1F5BB;" class="filebox_thumb" title="orig image"></span><br>'
+			exclam_mark='!'
+
+		case image/bmp
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-bmp.png" alt="&#x1F5BB;" height='^$icopict_size^' title="bitmap image"></span><br>'
+			if(~ $picture_preview 1) thumb='<span style="font-size: '^$icosign_size^'"><img src="/'^$filesdir/$filesdir_subdir/$basename^'" alt="&#x1F5BB;" class="filebox_thumb" title="orig image"></span><br>'
+			exclam_mark='!'
+
+		case image/gif
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-gif.png" alt="&#x1F5BB;" height='^$icopict_size^' title="gif image"></span><br>'
+			if(~ $picture_preview 1) thumb='<span style="font-size: '^$icosign_size^'"><img src="/'^$filesdir/$filesdir_subdir/$basename^'" alt="&#x1F5BB;" class="filebox_thumb" title="orig image"></span><br>'
+			exclam_mark='!'
+
+		case image/jpeg
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-jpeg.png" alt="&#x1F5BB;" height='^$icopict_size^' title="jpeg image"></span><br>'
+			if(~ $picture_preview 1) thumb='<span style="font-size: '^$icosign_size^'"><img src="/'^$filesdir/$filesdir_subdir/$basename^'" alt="&#x1F5BB;" class="filebox_thumb" title="orig image"></span><br>'
+			exclam_mark='!'
+
+		case image/png
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-png.png" alt="&#x1F5BB;" height='^$icopict_size^' title="png image"></span><br>'
+			if(~ $picture_preview 1) thumb='<span style="font-size: '^$icosign_size^'"><img src="/'^$filesdir/$filesdir_subdir/$basename^'" alt="&#x1F5BB;" class="filebox_thumb" title="orig image"></span><br>'
+			exclam_mark='!'
+
+		case video/apng
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-png.png" alt="&#x1F5BB;" height='^$icopict_size^' title="animated png image"></span><br>'
+			if(~ $picture_preview 1) thumb='<span style="font-size: '^$icosign_size^'"><img src="/'^$filesdir/$filesdir_subdir/$basename^'" alt="&#x1F5BB;" class="filebox_thumb" title="orig image"></span><br>'
+			exclam_mark='!'
+
+		case image/webp
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-webp.png" alt="&#x1F5BB;" height='^$icopict_size^' title="webp image"></span><br>'
+			if(~ $picture_preview 1) thumb='<span style="font-size: '^$icosign_size^'"><img src="/'^$filesdir/$filesdir_subdir/$basename^'" alt="&#x1F5BB;" class="filebox_thumb" title="orig image"></span><br>'
+			exclam_mark='!'
+
+
+
+## Not previewable graphics
+		case application/x-blender
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-blender.png" alt="&#x1F5BB;" height='^$icopict_size^' title="blender image"></span><br>'
+
+		case application/x-coreldraw
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-coreldraw.png" alt="&#x1F5BB;" height='^$icopict_size^' title="coreldraw image"></span><br>'
+
+		case image/emf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-emf.png" alt="&#x1F5BB;" height='^$icopict_size^' title="emf image"></span><br>'
+
+		case image/x-eps
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-eps.png" alt="&#x1F5BB;" height='^$icopict_size^' title="eps image"></span><br>'
+
+		case image/heif
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-heif.png" alt="&#x1F5BB;" height='^$icopict_size^' title="heif image"></span><br>'
+
+		case image/ppm
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-ppm.png" alt="&#x1F5BB;" height='^$icopict_size^' title="ppm image"></span><br>'
+
+		case image/tiff
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-tiff.png" alt="&#x1F5BB;" height='^$icopict_size^' title="tiff image"></span><br>'
+
+		case image/xbm
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-xbm.png" alt="&#x1F5BB;" height='^$icopict_size^' title="XWindow bitmap image"></span><br>'
+
+		case image/x-pcx
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-pcx.png" alt="&#x1F5BB;" height='^$icopict_size^' title="pcx image"></span><br>'
+
+		case image/vnd.adobe.photoshop
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-psd.png" alt="&#x1F5BB;" height='^$icopict_size^' title="Adobe PhotoShop image"></span><br>'
+
+		case image/jp2
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-jp2.png" alt="&#x1F5BB;" height='^$icopict_size^' title="jp2 image"></span><br>'
+
+		case image/jxl image/vnd.ms-photo
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-jxl.png" alt="&#x1F5BB;" height='^$icopict_size^' title="jpegXL image"></span><br>'
+
+		case image/wmf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-wmf.png" alt="&#x1F5BB;" height='^$icopict_size^' title="wmf image"></span><br>'
+
+		case image/xwd
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-xwd.png" alt="&#x1F5BB;" height='^$icopict_size^' title="XWindow dump image"></span><br>'
+
+		case image/x-jng
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-jng.png" alt="&#x1F5BB;" height='^$icopict_size^' title="JNG image"></span><br>'
+
+		case image/x-mng
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-mng.png" alt="&#x1F5BB;" height='^$icopict_size^' title="MNG image"></span><br>'
+
+		case image/x-pif
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-pif.png" alt="&#x1F5BB;" height='^$icopict_size^' title="pif image"></span><br>'
+
+		case image/x-xcf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-xcf.png" alt="&#x1F5BB;" height='^$icopict_size^' title="GIMP xcf image"></span><br>'
+
+
+
+## Fonts
+		case  application/x-font
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/fonts-package.png" alt="&#x1F5DA;" height='^$icopict_size^' title="font"></span><br>'
+
+		case application/font-sfnt
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-font-sfnt.png" alt="&#x1F5DA;" height='^$icopict_size^' title="Open Type font"></span><br>'
+
+		case application/x-font-bdf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-font-bdf.png" alt="&#x1F5DA;" height='^$icopict_size^' title="bdf font"></span><br>'
+
+		case application/x-font-ttf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-font-ttf.png" alt="&#x1F5DA;" height='^$icopict_size^' title="TrueType font"></span><br>'
+
+		case application/x-font-txf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-font-txf.png" alt="&#x1F5DA;" height='^$icopict_size^' title="Celestia txf font"></span><br>'
+
+		case application/vnd.ms-fontobject
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-font-eot.png" alt="&#x1F5DA;" height='^$icopict_size^' title="eot font"></span><br>'
+
+		case application/font-woff
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-font-woff.png" alt="&#x1F5DA;" height='^$icopict_size^' title="Web Open font"></span><br>'
+
+		case application/font-woff2
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-font-woff2.png" alt="&#x1F5DA;" height='^$icopict_size^' title="Web Open 2 font"></span><br>'
+
+
+
+## Postscript and other documents
+		case application/dvi
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-dvi.png" alt="&#x1F5BA;" height='^$icopict_size^' title="dvi tex document"></span><br>'
+
+		case image/vnd.djvu
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-vnd.djvu.png" alt="&#x1F5BA;" height='^$icopict_size^' title="DjVu document"></span><br>'
+
+		case application/framemaker
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-framemaker.png" alt="&#x1F5BA;" height='^$icopict_size^' title="Adobe FrameMaker document"></span><br>'
+
+		case application/ghostscript
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-ghostscript.png" alt="&#x1F5BA;" height='^$icopict_size^' title="Ghostscript document"></span><br>'
+
+		case application/pdf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-pdf.png" alt="&#x1F5BA;" height='^$icopict_size^' title="pdf document"></span><br>'
+
+		case application/postscript
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-postscript.png" alt="&#x1F5BA;" height='^$icopict_size^' title="Postscript document"></span><br>'
+
+		case application/troff text/troff
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-troff.png" alt="&#x1F5BA;" height='^$icopict_size^' title="Troff document"></span><br>'
+
+		case application/vnd.ms-htmlhelp application/x-helpfile
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/text-x-hlp.png" alt="&#x1F5BA;" height='^$icopict_size^' title="Help document"></span><br>'
+
+
+
+## Texts htmls xmls
+		case application/xml application/x-cc3d
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-xml.png" alt="&#x1F5CE;" height='^$icopict_size^' title="xml data"></span><br>'
+
+		case text/html
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/text-html.png" alt="&#x1F5CE;" height='^$icopict_size^' title="html page"></span><br>'
+
+		case text/plain
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/text-plain.png" alt="&#x1F5CE;" height='^$icopict_size^' title="plain text"></span><br>'
+
+		case application/warc
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-warc.png" alt="&#x1F5CE;" height='^$icopict_size^' title="web-archive html data"></span><br>'
+
+		case application/doc application/x-mswrite
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-doc.png" alt="&#x1F5CE;" height='^$icopict_size^' title="Word document"></span><br>'
+
+		case application/vnd.openxmlformats-officedocument.wordprocessingml.document application/vnd.oasis.opendocument.text
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-vnd.openxmlformats-officedocument.wordprocessingml.document.png" alt="&#x1F5CE;" height='^$icopict_size^' title="Openxml document"></span><br>'
+
+
+
+## Databases storages
+		case application/msaccess
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-msaccess.png" alt="&#x26C1;" height='^$icopict_size^' title="MSAccess data"></span><br>'
+
+		case application/netcdf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-netcdf.png" alt="&#x26C1;" height='^$icopict_size^' title="NetCDF data"></span><br>'
+
+		case application/x-hdf*
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-hdf.png" alt="&#x26C1;" height='^$icopict_size^' title="hdf data"></span><br>'
+
+		case application/mdb
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-mdb.png" alt="&#x26C1;" height='^$icopict_size^' title="mdb data"></span><br>'
+
+
+
+## Isos, images
+		case application/x-iso9660-image application/x-roxio-toast
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-iso9660-image.png" alt="&#x1F4BF;" height='^$icopict_size^' title="iso-9660 image"></span><br>'
+
+		case application/binhex
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-binhex.png" alt="&#x1F4BF;" height='^$icopict_size^' title="Mac binhex image"></span><br>'
+
+		case application/x-qemu-disk
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-vnd.squashfs.png" alt="&#x1F4BF;" height='^$icopict_size^' title="qemu disk"></span><br>'
+
+		case application/sql application/x-sql
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-sql.png" alt="&#x1F4BF;" height='^$icopict_size^' title="sql database"></span><br>'
+
+		case application/x-sqlite3
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-sqlite3.png" alt="&#x1F4BF;" height='^$icopict_size^' title="sqlite database"></span><br>'
+
+		case application/x-ms-wim
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-ms-wim.png" alt="&#x1F4BF;" height='^$icopict_size^' title="MS wim image"></span><br>'
+
+		case application/x-squashfs
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-vnd.squashfs.png" alt="&#x1F4BF;" height='^$icopict_size^' title="squashfs image"></span><br>'
+
+		case application/x-stuffit
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-stuffit.png" alt="&#x1F4BF;" height='^$icopict_size^' title="Stuffit package"></span><br>'
+
+		case application/x-vmdk application/x-apple-diskimage application/x-virtualbox-vdi application/x-vhd application/x-vhdx-disk
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-vnd.squashfs.png" alt="&#x1F4BF;" height='^$icopict_size^' title="disk image"></span><br>'
+
+
+
+## Videos
+		case application/x-shockwave-flash
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-shockwave-flash.png" alt="&#x1F3A5;" height='^$icopict_size^' title="Shockwave Flash media"></span><br>'
+
+		case video/3gpp
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-3gpp.png" alt="&#x1F3A5;" height='^$icopict_size^' title="3gpp video"></span><br>'
+
+		case video/avi
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-mpeg.png" alt="&#x1F3A5;" height='^$icopict_size^' title="avi video"></span><br>'
+
+		case video/MP2T
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-mp2t.png" alt="&#x1F3A5;" height='^$icopict_size^' title="MPEG Transport Stream data"></span><br>'
+
+		case video/mp4
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-mp4.png" alt="&#x1F3A5;" height='^$icopict_size^' title="mp4 video"></span><br>'
+
+		case video/mpeg
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-mpeg.png" alt="&#x1F3A5;" height='^$icopict_size^' title="MPEG video"></span><br>'
+
+		case video/ogg
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-ogg.png" alt="&#x1F3A5;" height='^$icopict_size^' title="ogg video"></span><br>'
+
+		case video/quicktime
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-quicktime.png" alt="&#x1F3A5;" height='^$icopict_size^' title="quicktime video"></span><br>'
+
+		case video/webm
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-webm.png" alt="&#x1F3A5;" height='^$icopict_size^' title="webm video"></span><br>'
+
+		case video/x-ms-asf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-x-ms-asf.png" alt="&#x1F3A5;" height='^$icopict_size^' title="MS asf video"></span><br>'
+
+		case application/vnd.rn-realmedia
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-vnd.rn-realmedia.png" alt="&#x1F3A5;" height='^$icopict_size^' title="realmedia"></span><br>'
+
+		case video/x-flv
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-x-flv.png" alt="&#x1F3A5;" height='^$icopict_size^' title="flash video"></span><br>'
+
+		case video/x-matroska
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/video-x-matroska.png" alt="&#x1F3A5;" height='^$icopict_size^' title="matroska video"></span><br>'
+
+
+
+## Executables and binaries
+		case application/x-binary
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-binary.png" alt="&#x1F5A5;" height='^$icopict_size^' title="binary executable"></span><br>'
+
+		case application/x-elf-executable
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-elf-executable.png" alt="&#x1F5A5;" height='^$icopict_size^' title="elf executable"></span><br>'
+
+		case application/x-msdos-program application/x-msdownload
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-msdos-program.png" alt="&#x1F5A5;" height='^$icopict_size^' title="MS-DOS executable"></span><br>'
+
+		case application/x-bytecode.python
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-bytecode.python.png" alt="&#x1F5A5;" height='^$icopict_size^' title="python bytecode"></span><br>'
+
+		case application/dicom
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-dicom.png" alt="&#x1F5A5;" height='^$icopict_size^' title="DICOM medical data"></span><br>'
+
+		case application/x-bittorrent
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-bittorrent.png" alt="&#x1F5A5;" height='^$icopict_size^' title="BitTorrent file"></span><br>'
+
+		case application/x-pem-file
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-pem-file.png" alt="&#x1F5A5;" height='^$icopict_size^' title="pem key"></span><br>'
+
+		case application/octet-stream
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-octet-stream.png" alt="&#x1F5A5;" height='^$icopict_size^' title="octet-stream"></span><br>'
+
+
+
+## Next part of switch construction see in fn fileinfo2
+		case *
+			fileinfo2 $1
+		}
+	echo $thumb 
+if(~ $isdir 0) echo '<a href="/'^$filesdir/$filesdir_subdir/$basename^'">'^$basename^'</a>'
+if not echo '<input type="submit" name="filesdir_subdir" class="submit_button" value="'^$basename^'">'
+	echo $info
+	if(~ $isdir 0) echo '<br><textarea cols=25 rows=3 title="Click to copy" class="copy_text" id="' $basename '" '^$onclick^'="copyText('^`{awk 'BEGIN{print "\x27"}'} $basename `{awk 'BEGIN{print "\x27"}'}^');" readonly>'^$exclam_mark^'[AltText]('^`{basename $filesdir}^/$filesdir_subdir/$basename^')</textarea>'
+	}
+
+
+
+## Freak hack due to limitation in rc on amount of case blocks in switch construction.. 
+fn fileinfo2{
+switch(`{nfile -m $1}) {
+## Data packages
+		case application/doom-data
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-doom-wad-data.png" alt="&#x1F5DC;" height='^$icopict_size^' title="Doom wad data"></span><br>'
+
+		case application/quake-data
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-quake-pack-data.png" alt="&#x1F5DC;" height='^$icopict_size^' title="Quake pack data"></span><br>'
+
+		case application/x-faces
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-faces.png" alt="&#x1F5DA;" height='^$icopict_size^' title="faces file"></span><br>'
+
+
+
+## Fonts
+		case application/x-font-pcf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-font-pcf.png" alt="&#x1F5DA;" height='^$icopict_size^' title="pcf font"></span><br>'
+
+
+
+## Graphics
+		case image/p9bit
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-p9bit.png" alt="&#x1F5BB;" height='^$icopict_size^' title="p9bit image"></span><br>'
+
+		case application/x-c4d
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-c4d.png" alt="&#x1F5BB;" height='^$icopict_size^' title="Cinema4D image"></span><br>'
+
+		case image/x-cur
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-icon.png" alt="&#x1F5BB;" height='^$icopict_size^' title="MS cursor"></span><br>'
+
+		case image/x-icon
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-generic.png" alt="&#x1F5BB;" height='^$icopict_size^' title="MS icon"></span><br>'
+
+		case image/svg+xml
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-svg+xml.png" alt="&#x1F5BB;" height='^$icopict_size^' title="SVG image"></span><br>'
+
+		case image/tga
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/image-x-tga.png" alt="&#x1F5BB;" height='^$icopict_size^' title="Targa image"></span><br>'
+
+		case application/x-navi-animation
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-navi-animation.png" alt="&#x1F5BB;" height='^$icopict_size^' title="MS animated cursor"></span><br>'
+
+		case text/sixel
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-ccmx.png" alt="&#x1F5BB;" height='^$icopict_size^' title="Sixel image script"></span><br>'
+
+
+
+## Audios
+		case audio/riff
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/audio-x-riff.png" alt="&#x1F3B6;" height='^$icopict_size^' title="riff audio"></span><br>'
+
+
+
+## Documents
+		case application/rtf
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-rtf.png" alt="&#x1F5CE;" height='^$icopict_size^' title="Rich Text document"></span><br>'
+
+		case message/rfc822 application/mbox
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/message-rfc822.png" alt="&#x1F5CE;" height='^$icopict_size^' title="e-mail document"></span><br>'
+
+		case application/vnd.ms-htmlhelp
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-chm.png" alt="&#x1F5CE;" height='^$icopict_size^' title="MS help document"></span><br>'
+
+		case text/diff
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/text-diff.png" alt="&#x1F5CE;" height='^$icopict_size^' title="diff document"></span><br>'
+
+		case application/fictionbook
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-fictionbook.png" alt="&#x1F5DC;" height='^$icopict_size^' title="Fiction book document"></span><br>'
+
+
+
+## Scripts, code sources
+		case application/x-ipynb+json
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-ipynb+json.png" alt="&#x1F5F1;" height='^$icopict_size^' title="IPython Notebook"></span><br>'
+
+		case application/x-limbo
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-limbo.png" alt="&#x1F5F1;" height='^$icopict_size^' title="limbo program"></span><br>'
+
+		case application/x-awk application/x-sed
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-awk.png" alt="&#x1F5F1;" height='^$icopict_size^' title="AWK/SED script"></span><br>'
+
+		case application/x-perl
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-perl.png" alt="&#x1F5F1;" height='^$icopict_size^' title="perl script"></span><br>'
+
+		case application/x-ruby
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/application-x-ruby.png" alt="&#x1F5F1;" height='^$icopict_size^' title="ruby script"></span><br>'
+
+		case text/lua
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/text-x-lua.png" alt="&#x1F5F1;" height='^$icopict_size^' title="lua program"></span><br>'
+
+		case text/x-php
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/text-x-php.png" alt="&#x1F5F1;" height='^$icopict_size^' title="PHP script"></span><br>'
+
+
+
+## Any other
+		case *
+			thumb='<span style="font-size: '^$icosign_size^'"><img src="img/'^$icodir^'/unknown.png" alt="&#x2047;" height='^$icopict_size^' title="Unknown"></span><br>'
+
+	}
+}
+

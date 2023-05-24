@@ -1,0 +1,25 @@
+
+## AdminPanel section:
+
+## Directory that stores files for embedding to wiki. 
+filesdir=wiki/_files
+
+## Directory with set of icons for filetypes (see _adm/fileinfo.rc). 
+## Put necessary files to subdir of wiki/_werc/_adm/img and set
+## apropriate directory name to $icodir. In case of wrong dirname
+## AdminPanel page will show some unicode signs instead.
+icodir='kde4'
+#icodir='everforest'
+
+## Size of unicode symbol for filetype (at "alt" parameter of "img" tag), if icon picture is not available
+icosign_size='3em'
+
+## Size of filetype icon picture
+icopict_size='48px'
+
+## Show pictures in lesser format. If value is 0 - shows filetype icons.
+picture_preview=1
+
+## To disable "onclick" JS-copy of embedding text set value to something other then 'onclick'
+onclick='onclick'
+
